@@ -13,6 +13,8 @@ class TestLoginCourier:
     "password": login_data[1]
 }
         response = requests.post(f'{BASE_URL}courier/login',data=payload)
+        r = response.json()['id']
+        requests.delete(f'{BASE_URL}courier/{r}')
         assert response.status_code == 200
 
     @allure.title('Тест что система возвращает id курьера при успешном логине')
@@ -24,8 +26,10 @@ class TestLoginCourier:
                 "password": login_data[1]
             }
             response = requests.post(f'{BASE_URL}courier/login', data=payload)
-            r = response.json()
-            assert r['id']
+            m = response.json()['id']
+            r = response.json()['id']
+            requests.delete(f'{BASE_URL}courier/{r}')
+            assert m
 
 
     @allure.title('Тест на возвращении ошибки при залогинивании курьера без заполнения пароля')
